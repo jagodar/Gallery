@@ -1,15 +1,15 @@
-var filesHandler = function (config) {
+var filesHandler = (function () {
 
-	function handleInput() {
+	function handleInput(config) {
 		var files = this.files;
 		handleFiles(files, config);
 	};
 
-	function handleFiles(files) {
+	function handleFiles(files, config) {
 		var file;
 		for (var i = 0; i < files.length; i++) {
 			file = files[i];
-			thumbnails.createThumbnail(file);
+			thumbnails.createThumbnail(file, config);
 		}
 	};
 
@@ -28,16 +28,16 @@ var filesHandler = function (config) {
 		handleFiles: handleFiles,
 		readFile: readFile
 	}
-};
+})();
 
-var input = function(config) {
+var input = (function() {
 
-	function setFileInput() {
+	function setFileInput(config) {
 		config.fileInput.setAttribute("multiple", "");
 		config.fileInput.setAttribute("accept", "image/*");
 	};
 
-	function uploadEvent() {
+	function uploadEvent(config) {
 		config.fileSelectBtn.addEventListener("click", function (e) {
 			if (config.fileInput) {
 				config.fileInput.click();
@@ -45,22 +45,22 @@ var input = function(config) {
 		}, false);
 	};
 
-	function changeEvent() {
+	function changeEvent(config) {
 		config.fileInput.addEventListener("change", filesHandler.handleInput, false);
 	};
 
-	function initInput() {
-		setFileInput();
-		uploadEvent();
-		changeEvent();
+	function initInput(config) {
+		setFileInput(config);
+		uploadEvent(config);
+		changeEvent(config);
 	};
 
 	return {
 		initInput: initInput
 	}
-};
+})();
 
-var dragNdrop = function(config) {
+var dragNdrop = (function() {
 
 	function defaults(e) {
 		e.stopPropagation();
@@ -95,7 +95,7 @@ var dragNdrop = function(config) {
 		filesHandler.handleFiles(files);
 	};
 
-	function setDNDEvents() {
+	function setDNDEvents(config) {
 		config.dragArea.element.addEventListener("dragenter", dragenter, false);	
 		config.dragArea.element.addEventListener("dragover", dragover, false);
 		config.dragArea.element.addEventListener("drop", drop, false);
@@ -105,9 +105,9 @@ var dragNdrop = function(config) {
 		setDNDEvents: setDNDEvents
 	}
 
-};
+})();
 
-var thumbnails = function(config) {
+var thumbnails = (function() {
 
 	function thumbnailOnClick(img) {
 		img.addEventListener("click", function () {
@@ -115,7 +115,7 @@ var thumbnails = function(config) {
 		}, false);
 	};
 
-	function createThumbnail(file) {
+	function createThumbnail(file, config) {
 		var img = document.createElement("img");
 		img.file = file;
 		if (config.thumbnail.attribute && config.thumbnail.attributeName) {
@@ -132,7 +132,7 @@ var thumbnails = function(config) {
 		createThumbnail: createThumbnail
 	}
 
-};
+})();
 
 
 (function() {
@@ -154,10 +154,7 @@ var thumbnails = function(config) {
 		},
 		galleryArea: document.body
 	};
-	thumbnails(config);
-	dragNdrop(config);
-	filesHandler(config);
-	input(config);
-	// input.initInput();
-	dragNdrop.setDNDEvents();
+
+	input.initInput(config);
+	dragNdrop.setDNDEvents(config);
 })();
