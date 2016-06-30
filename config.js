@@ -1,4 +1,5 @@
-(function() {
+(function () {
+    "use strict";
     var config = {
         fileInput: document.querySelector(".fileInput"),
         fileSelectBtn: document.querySelector(".fileSelect"),
@@ -20,4 +21,4 @@
 
     input.initInput(config);
     dragNdrop.setDNDEvents(config);
-})();
+}());

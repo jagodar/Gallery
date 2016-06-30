@@ -1,9 +1,9 @@
-var dragNdrop = (function() {
-
+var dragNdrop = (function () {
+    "use strict";
     function defaults(e) {
         e.stopPropagation();
         e.preventDefault();
-    };
+    }
 
     function dragenter(e, config) {
         defaults(e);
@@ -13,11 +13,11 @@ var dragNdrop = (function() {
         if (config.dragArea.dragId) {
             config.dragArea.element.id = config.dragArea.dragId;
         }
-    };
+    }
 
     function dragover(e) {
         defaults(e);
-    };
+    }
 
     function drop(e, config) {
         defaults(e);
@@ -25,26 +25,25 @@ var dragNdrop = (function() {
             config.dragArea.element.value = config.dragArea.defaultText;
         }
         if (config.dragArea.dragId) {
-            config.dragArea.element.id = config.dragArea.defaultId || ""; 
+            config.dragArea.element.id = config.dragArea.defaultId || "";
         }
 
         var dt = e.dataTransfer,
         files = dt.files;
         filesHandler.handleFiles(files, config);
-    };
+    }
 
     function setDNDEvents(config) {
         config.dragArea.element.addEventListener("dragenter", function (e) {
             dragenter(e, config);
-        }, false);  
+        }, false);
         config.dragArea.element.addEventListener("dragover", dragover, false);
         config.dragArea.element.addEventListener("drop", function (e) {
             drop(e, config);
         }, false);
-    };
+    }
 
     return {
         setDNDEvents: setDNDEvents
-    }
-
-})();
+    };
+}());

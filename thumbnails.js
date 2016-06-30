@@ -1,10 +1,10 @@
-var thumbnails = (function() {
-
+var thumbnails = (function () {
+    "use strict";
     function thumbnailOnClick(img) {
         img.addEventListener("click", function () {
             window.open(this.src);
         }, false);
-    };
+    }
 
     function createThumbnail(file, config) {
         var img = document.createElement("img");
@@ -17,10 +17,9 @@ var thumbnails = (function() {
         config.galleryArea.appendChild(img);
         filesHandler.readFile(img, file);
         thumbnailOnClick(img);
-    };
+    }
 
     return {
         createThumbnail: createThumbnail
-    }
-
-})();
+    };
+}());

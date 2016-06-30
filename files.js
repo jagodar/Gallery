@@ -1,9 +1,9 @@
 var filesHandler = (function () {
-
+    "use strict";
     function handleInput(config, that) {
         var files = that.files;
         handleFiles(files, config);
-    };
+    }
 
     function handleFiles(files, config) {
         var file;
@@ -11,7 +11,7 @@ var filesHandler = (function () {
             file = files[i];
             thumbnails.createThumbnail(file, config);
         }
-    };
+    }
 
     function readFile(img, file) {
         var reader = new FileReader();
@@ -21,11 +21,11 @@ var filesHandler = (function () {
                             }; 
                         })(img);
         reader.readAsDataURL(file);     
-    };
+    }
 
     return {
         handleInput: handleInput,
         handleFiles: handleFiles,
         readFile: readFile
-    }
+    };
 })();
