@@ -28,4 +28,4 @@ var filesHandler = (function () {
         handleFiles: handleFiles,
         readFile: readFile
     };
-})();
+}());
