@@ -1,7 +1,7 @@
 var filesHandler = (function () {
 
-	function handleInput(config) {
-		var files = this.files;
+	function handleInput(config, that) {
+		var files = that.files;
 		handleFiles(files, config);
 	};
 
@@ -46,7 +46,10 @@ var input = (function() {
 	};
 
 	function changeEvent(config) {
-		config.fileInput.addEventListener("change", filesHandler.handleInput, false);
+		config.fileInput.addEventListener("change", function (e) {
+			var that = this;
+			filesHandler.handleInput(config, that);
+		}, false);
 	};
 
 	function initInput(config) {
@@ -67,7 +70,7 @@ var dragNdrop = (function() {
 		e.preventDefault();
 	};
 
-	function dragenter(e) {
+	function dragenter(e, config) {
 		defaults(e);
 		if (config.dragArea.dragText && config.dragArea.defaultText) {
 			config.dragArea.element.value = config.dragArea.dragText;
@@ -81,10 +84,10 @@ var dragNdrop = (function() {
 		defaults(e);
 	};
 
-	function drop(e) {
+	function drop(e, config) {
 		defaults(e);
 		if (config.dragArea.dragText && config.dragArea.defaultText) {
-			config.dragArea.element.value = defaultText;
+			config.dragArea.element.value = config.dragArea.defaultText;
 		}
 		if (config.dragArea.dragId) {
 			config.dragArea.element.id = config.dragArea.defaultId || ""; 
@@ -92,13 +95,17 @@ var dragNdrop = (function() {
 
 		var dt = e.dataTransfer,
 		files = dt.files;
-		filesHandler.handleFiles(files);
+		filesHandler.handleFiles(files, config);
 	};
 
 	function setDNDEvents(config) {
-		config.dragArea.element.addEventListener("dragenter", dragenter, false);	
+		config.dragArea.element.addEventListener("dragenter", function (e) {
+			dragenter(e, config);
+		}, false);	
 		config.dragArea.element.addEventListener("dragover", dragover, false);
-		config.dragArea.element.addEventListener("drop", drop, false);
+		config.dragArea.element.addEventListener("drop", function (e) {
+			drop(e, config);
+		}, false);
 	};
 
 	return {
@@ -121,8 +128,8 @@ var thumbnails = (function() {
 		if (config.thumbnail.attribute && config.thumbnail.attributeName) {
 			img.setAttribute(config.thumbnail.attribute, config.thumbnail.attributeName);
 		}
-		img.style.width = config.thumbnail.width;
-		img.style.height = config.thumbnail.height;
+		img.style.width = config.thumbnail.width || "150px";
+		img.style.height = config.thumbnail.height || "150px";
 		config.galleryArea.appendChild(img);
 		filesHandler.readFile(img, file);
 		thumbnailOnClick(img);
